@@ -1,464 +1,836 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Love Page - Dia dos Namorados</title>
     <!-- Ícone de coração na aba -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='28'>❤️</text></svg>">
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='28'>❤️</text></svg>"
+    />
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <!-- Google Fonts - Pacifico e Caveat -->
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Caveat&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&family=Caveat&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        body {
-            background-color: #1a1a1a; /* Fundo preto */
-            color: #ff4d4d; /* Texto vermelho suave */
-            font-family: 'Arial', sans-serif;
+      body {
+        background-color: #1a1a1a; /* Fundo preto */
+        color: #ff4d4d; /* Texto vermelho suave */
+        font-family: "Arial", sans-serif;
+      }
+      h1,
+      h2 {
+        font-family: "Georgia", serif;
+        color: #ff6666; /* Títulos em vermelho claro */
+      }
+      .heart-divider {
+        width: 100px;
+        height: 2px;
+        background-color: #ff6666;
+        margin: 10px auto;
+        position: relative;
+      }
+      .heart-divider::before,
+      .heart-divider::after {
+        content: "❤";
+        position: absolute;
+        top: -10px;
+        font-size: 1.5rem;
+        color: #ff6666;
+        transition: transform 0.2s;
+      }
+      .heart-animated {
+        display: inline-block;
+        animation: pulse 1.2s infinite;
+      }
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
         }
-        h1, h2 {
-            font-family: 'Georgia', serif;
-            color: #ff6666; /* Títulos em vermelho claro */
+        50% {
+          transform: scale(1.18);
         }
-        .heart-divider {
-            width: 100px;
-            height: 2px;
-            background-color: #ff6666;
-            margin: 10px auto;
-            position: relative;
+        100% {
+          transform: scale(1);
         }
-        .heart-divider::before,
-        .heart-divider::after {
-            content: "❤";
-            position: absolute;
-            top: -10px;
-            font-size: 1.5rem;
-            color: #ff6666;
-            transition: transform 0.2s;
+      }
+      .carousel-img {
+        width: 100%;
+        height: 500px; /* igual à galeria */
+        object-fit: cover;
+        border-radius: 15px;
+      }
+      section {
+        padding: 40px 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        position: relative; /* Para posicionar os corações dentro da seção */
+        overflow: hidden; /* Garante que os corações não saiam da seção */
+      }
+      .heart {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        background-color: transparent;
+        animation: fall 5s linear infinite;
+        z-index: 0; /* Garante que os corações fiquem atrás dos elementos */
+      }
+      @keyframes fall {
+        0% {
+          transform: translateY(-650px) rotate(0deg); /* Começa bem acima da seção */
+          opacity: 1;
         }
-        .heart-animated {
-            display: inline-block;
-            animation: pulse 1.2s infinite;
+        100% {
+          transform: translateY(100vh) rotate(360deg); /* Percorre toda a altura da tela */
+          opacity: 0;
         }
-        @keyframes pulse {
-            0% { transform: scale(1);}
-            50% { transform: scale(1.18);}
-            100% { transform: scale(1);}
+      }
+      .content {
+        position: relative;
+        z-index: 1; /* Garante que o conteúdo fique acima dos corações */
+      }
+      .section-dark {
+        background-color: #333333; /* Fundo cinza escuro */
+        color: #ff4d4d;
+      }
+      .section-light {
+        background-color: #f4f4f4; /* Fundo claro */
+        color: #333333;
+      }
+      .galery-img {
+        width: 100%;
+        height: 480px; /* ajuste a altura conforme desejar */
+        object-fit: cover;
+        border-radius: 12px;
+      }
+      .clock-animated {
+        animation: rotateClock 6s linear infinite;
+        display: inline-block;
+      }
+      @keyframes rotateClock {
+        100% {
+          transform: rotate(360deg);
         }
-        .carousel-img {
-            width: 100%;
-            height: 500px; /* igual à galeria */
-            object-fit: cover;
-            border-radius: 15px;
+      }
+      #contador-dias,
+      #contador-horas {
+        opacity: 0;
+        animation: fadeIn 1.5s forwards;
+      }
+      @keyframes fadeIn {
+        to {
+          opacity: 1;
         }
-        section {
-            padding: 40px 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            position: relative; /* Para posicionar os corações dentro da seção */
-            overflow: hidden; /* Garante que os corações não saiam da seção */
+      }
+      .typewriter {
+        display: inline-block;
+        border-right: 2px solid #ffb3b3;
+        white-space: nowrap;
+        overflow: hidden;
+        animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+        font-family: inherit;
+      }
+      @keyframes typing {
+        from {
+          width: 0;
         }
-        .heart {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            background-color: transparent;
-            animation: fall 5s linear infinite;
-            z-index: 0; /* Garante que os corações fiquem atrás dos elementos */
+        to {
+          width: 100%;
         }
-        @keyframes fall {
-            0% {
-                transform: translateY(-650px) rotate(0deg); /* Começa bem acima da seção */
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) rotate(360deg); /* Percorre toda a altura da tela */
-                opacity: 0;
-            }
+      }
+      @keyframes blink-caret {
+        0%,
+        100% {
+          border-color: transparent;
         }
-        .content {
-            position: relative;
-            z-index: 1; /* Garante que o conteúdo fique acima dos corações */
+        50% {
+          border-color: #ffb3b3;
         }
-        .section-dark {
-            background-color: #333333; /* Fundo cinza escuro */
-            color: #ff4d4d;
-        }
-        .section-light {
-            background-color: #f4f4f4; /* Fundo claro */
-            color: #333333;
-        }
-        .galery-img {
-            width: 100%;
-            height: 480px; /* ajuste a altura conforme desejar */
-            object-fit: cover;
-            border-radius: 12px;
-        }
-        .clock-animated {
-            animation: rotateClock 6s linear infinite;
-            display: inline-block;
-        }
-        @keyframes rotateClock {
-            100% { transform: rotate(360deg);}
-        }
-        #contador-dias, #contador-horas {
-            opacity: 0;
-            animation: fadeIn 1.5s forwards;
-        }
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-        .typewriter {
-            display: inline-block;
-            border-right: 2px solid #ffb3b3;
-            white-space: nowrap;
-            overflow: hidden;
-            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
-            font-family: inherit;
-        }
-        @keyframes typing {
-            from { width: 0 }
-            to { width: 100% }
-        }
-        @keyframes blink-caret {
-            0%, 100% { border-color: transparent }
-            50% { border-color: #ffb3b3; }
-        }
-        .polaroid {
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.18), 0 1.5px 4px rgba(0,0,0,0.12);
-            padding: 12px 12px 38px 12px;
-            margin-bottom: 24px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transform: rotate(-2deg);
-            transition: transform 0.2s;
-        }
-        .polaroid:hover {
-            box-shadow: 0 16px 32px rgba(0,0,0,0.22), 0 3px 8px rgba(0,0,0,0.16);
-        }
-        .polaroid-caption {
-            font-family: 'Pacifico', 'Caveat', cursive, sans-serif;
-            font-size: 1.1rem;
-            color: #333;
-            text-align: center;
-            margin-top: 10px;
-            letter-spacing: 1px;
-            text-shadow: 0 1px 0 #fff;
-            width: 100%;
-            position: absolute;
-            bottom: 10px;
-            left: 0;
-            pointer-events: none;
-        }
-        /* Polaroid para o carrossel */
-        .polaroid-carousel .polaroid {
-            background: #fff;
-            border-radius: 18px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.18), 0 1.5px 4px rgba(0,0,0,0.12);
-            padding: 0 0 38px 0;
-            margin-bottom: 0;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 500px;
-            height: 500px;
-            justify-content: flex-start;
-        }
-        .polaroid-carousel .polaroid-caption {
-            font-family: 'Pacifico', 'Caveat', cursive, sans-serif;
-            font-size: 1.1rem;
-            color: #333;
-            text-align: center;
-            margin-top: 10px;
-            letter-spacing: 1px;
-            text-shadow: 0 1px 0 #fff;
-            width: 100%;
-            position: absolute;
-            bottom: 10px;
-            left: 0;
-            pointer-events: none;
-        }
-        .polaroid-carousel .carousel-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 18px 18px 0 0;
-        }
+      }
+      .polaroid {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18),
+          0 1.5px 4px rgba(0, 0, 0, 0.12);
+        padding: 12px 12px 38px 12px;
+        margin-bottom: 24px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transform: rotate(-2deg);
+        transition: transform 0.2s;
+      }
+      .polaroid:hover {
+        box-shadow: 0 16px 32px rgba(0, 0, 0, 0.22),
+          0 3px 8px rgba(0, 0, 0, 0.16);
+      }
+      .polaroid-caption {
+        font-family: "Pacifico", "Caveat", cursive, sans-serif;
+        font-size: 1.1rem;
+        color: #333;
+        text-align: center;
+        margin-top: 10px;
+        letter-spacing: 1px;
+        text-shadow: 0 1px 0 #fff;
+        width: 100%;
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        pointer-events: none;
+      }
+      /* Polaroid para o carrossel */
+      .polaroid-carousel .polaroid {
+        background: #fff;
+        border-radius: 18px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18),
+          0 1.5px 4px rgba(0, 0, 0, 0.12);
+        padding: 0 0 38px 0;
+        margin-bottom: 0;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 500px;
+        height: 500px;
+        justify-content: flex-start;
+      }
+      .polaroid-carousel .polaroid-caption {
+        font-family: "Pacifico", "Caveat", cursive, sans-serif;
+        font-size: 1.1rem;
+        color: #333;
+        text-align: center;
+        margin-top: 10px;
+        letter-spacing: 1px;
+        text-shadow: 0 1px 0 #fff;
+        width: 100%;
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        pointer-events: none;
+      }
+      .polaroid-carousel .carousel-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 18px 18px 0 0;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Primeira seção -->
     <section class="section-dark text-center" id="heartContainer">
-        <div class="content">
-            <h1>Minha Homenagem para Você</h1>
-            <div style="display: flex; justify-content: center; align-items: center; gap: 30px; margin-bottom: 20px;">
-                <span class="heart-animated" style="font-size: 2rem; color: #ff6666;">❤</span>
-                <span class="heart-animated" style="font-size: 2rem; color: #ff6666;">❤</span>
-            </div>
-            <p>Feliz Dia dos Namorados, meu amor! Esta página é dedicada a você, a pessoa que ilumina minha vida todos os dias.</p>
-
-            <!-- Carrossel de imagens estilo polaroid, sem texto dentro -->
-            <div class="d-flex justify-content-center mt-4">
-                <div id="carouselPrincipal" class="carousel slide shadow-lg polaroid-carousel" style="max-width: 340px;">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <div class="polaroid" style="margin:0; padding:0 0 38px 0; border-radius: 18px;">
-                                <img src="Images/carroussel/img14.jpg" class="carousel-img d-block w-100" alt="Momentos juntos" style="border-radius: 18px 18px 0 0;">
-                                <div class="polaroid-caption">Viagem</div>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="polaroid" style="margin:0; padding:0 0 38px 0; border-radius: 18px;">
-                                <img src="Images/carroussel/img21.jpg" class="carousel-img d-block w-100" alt="Lembranças especiais" style="border-radius: 18px 18px 0 0;">
-                                <div class="polaroid-caption">Mineirinhos</div>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="polaroid" style="margin:0; padding:0 0 38px 0; border-radius: 18px;">
-                                <img src="Images/carroussel/img23.jpg" class="carousel-img d-block w-100" alt="Nós dois" style="border-radius: 18px 18px 0 0;">
-                                <div class="polaroid-caption">Beijo</div>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselPrincipal" data-bs-slide="prev" style="filter: drop-shadow(0 0 4px #ff4d4d);">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Anterior</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselPrincipal" data-bs-slide="next" style="filter: drop-shadow(0 0 4px #ff4d4d);">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Próximo</span>
-                    </button>
-                    <div class="carousel-indicators" style="bottom: -30px;">
-                        <button type="button" data-bs-target="#carouselPrincipal" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1" style="background-color: #ff4d4d;"></button>
-                        <button type="button" data-bs-target="#carouselPrincipal" data-bs-slide-to="1" aria-label="Slide 2" style="background-color: #ff4d4d;"></button>
-                        <button type="button" data-bs-target="#carouselPrincipal" data-bs-slide-to="2" aria-label="Slide 3" style="background-color: #ff4d4d;"></button>
-                    </div>
-                </div>
-            </div>
+      <div class="content">
+        <h1>Minha Homenagem para Você</h1>
+        <div
+          style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 20px;
+          "
+        >
+          <span class="heart-animated" style="font-size: 2rem; color: #ff6666"
+            >❤</span
+          >
+          <span class="heart-animated" style="font-size: 2rem; color: #ff6666"
+            >❤</span
+          >
         </div>
+        <p>
+          Feliz Dia dos Namorados, meu amor! Esta página é dedicada a você, a
+          pessoa que ilumina minha vida todos os dias.
+        </p>
+
+        <!-- Carrossel de imagens estilo polaroid, sem texto dentro -->
+        <div class="d-flex justify-content-center mt-4">
+          <div
+            id="carouselPrincipal"
+            class="carousel slide shadow-lg polaroid-carousel"
+            style="max-width: 340px"
+          >
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <div
+                  class="polaroid"
+                  style="margin: 0; padding: 0 0 38px 0; border-radius: 18px"
+                >
+                  <img
+                    src="Images/carroussel/img14.jpg"
+                    class="carousel-img d-block w-100"
+                    alt="Momentos juntos"
+                    style="border-radius: 18px 18px 0 0"
+                  />
+                  <div class="polaroid-caption">Viagem</div>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div
+                  class="polaroid"
+                  style="margin: 0; padding: 0 0 38px 0; border-radius: 18px"
+                >
+                  <img
+                    src="Images/carroussel/img21.jpg"
+                    class="carousel-img d-block w-100"
+                    alt="Lembranças especiais"
+                    style="border-radius: 18px 18px 0 0"
+                  />
+                  <div class="polaroid-caption">Mineirinhos</div>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div
+                  class="polaroid"
+                  style="margin: 0; padding: 0 0 38px 0; border-radius: 18px"
+                >
+                  <img
+                    src="Images/carroussel/img23.jpg"
+                    class="carousel-img d-block w-100"
+                    alt="Nós dois"
+                    style="border-radius: 18px 18px 0 0"
+                  />
+                  <div class="polaroid-caption">Beijo</div>
+                </div>
+              </div>
+            </div>
+            <button
+              class="carousel-control-prev"
+              type="button"
+              data-bs-target="#carouselPrincipal"
+              data-bs-slide="prev"
+              style="filter: drop-shadow(0 0 4px #ff4d4d)"
+            >
+              <span
+                class="carousel-control-prev-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Anterior</span>
+            </button>
+            <button
+              class="carousel-control-next"
+              type="button"
+              data-bs-target="#carouselPrincipal"
+              data-bs-slide="next"
+              style="filter: drop-shadow(0 0 4px #ff4d4d)"
+            >
+              <span
+                class="carousel-control-next-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Próximo</span>
+            </button>
+            <div class="carousel-indicators" style="bottom: -30px">
+              <button
+                type="button"
+                data-bs-target="#carouselPrincipal"
+                data-bs-slide-to="0"
+                class="active"
+                aria-current="true"
+                aria-label="Slide 1"
+                style="background-color: #ff4d4d"
+              ></button>
+              <button
+                type="button"
+                data-bs-target="#carouselPrincipal"
+                data-bs-slide-to="1"
+                aria-label="Slide 2"
+                style="background-color: #ff4d4d"
+              ></button>
+              <button
+                type="button"
+                data-bs-target="#carouselPrincipal"
+                data-bs-slide-to="2"
+                aria-label="Slide 3"
+                style="background-color: #ff4d4d"
+              ></button>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Segunda seção -->
     <section class="section-light text-center">
-        <h2>Sobre Nós</h2>
-        <p style="max-width: 700px; margin: 0 auto; text-align: left; font-size: 1.15rem; line-height: 1.7;">
-            Nossa história daria um bom livro... ou até um filme de romance.<br>
-            Nos conhecemos em um dia incomum, cheio de acontecimentos. Mesmo assim, algo ficou marcado entre a gente — uma conexão diferente, uma espécie de imã invisível que sempre nos atraía.
-            <br><br>
-            Começamos a sair e, aos poucos, nosso amor foi crescendo. Claro, tivemos nossos momentos difíceis: brigas, dúvidas, incertezas e até desânimo. Mas, apesar de tudo, escolhemos continuar. Decidimos ficar juntos.
-            <br><br>
-            E, a cada passo, fomos nos entendendo melhor, nos conhecendo mais profundamente. Cada viagem foi uma nova lembrança incrível. Até que chegou o grande dia da nossa oficialização — o momento em que assumimos o que já era tão real para nós.
-            <br><br>
-            Vieram semanas difíceis logo depois. Adversidades, distâncias, saudades. Mas resistimos. Ficamos firmes. Vivemos momentos incríveis: fomos a eventos, à praia, curtimos intensamente cada segundo lado a lado.
-            <br><br>
-            Até que, de forma inesperada e repentina, veio a notícia: não estaríamos mais tão juntinhos, não conseguiríamos nos ver todo final de semana. Foi doloroso. Ainda está sendo. Mas seguimos juntos. Superando, dia após dia.
-            <br><br>
-            E hoje, nesse dia tão especial — nosso primeiro Dia dos Namorados juntos — estamos, novamente, lado a lado. Algo que parecia improvável… mas que virou realidade.
-            <br><br>
-            Vejo que, com o tempo, tudo vai se ajeitando. Nosso amor é forte. E essa… essa é só a primeira parte da nossa história.
-            <br><br>
-            <strong>Continua...</strong>
-        </p>
+      <h2>Sobre Nós</h2>
+      <p
+        style="
+          max-width: 700px;
+          margin: 0 auto;
+          text-align: left;
+          font-size: 1.15rem;
+          line-height: 1.7;
+        "
+      >
+        Nossa história daria um bom livro... ou até um filme de romance.<br />
+        Nos conhecemos em um dia incomum, cheio de acontecimentos. Mesmo assim,
+        algo ficou marcado entre a gente — uma conexão diferente, uma espécie de
+        imã invisível que sempre nos atraía.
+        <br /><br />
+        Começamos a sair e, aos poucos, nosso amor foi crescendo. Claro, tivemos
+        nossos momentos difíceis: brigas, dúvidas, incertezas e até desânimo.
+        Mas, apesar de tudo, escolhemos continuar. Decidimos ficar juntos.
+        <br /><br />
+        E, a cada passo, fomos nos entendendo melhor, nos conhecendo mais
+        profundamente. Cada viagem foi uma nova lembrança incrível. Até que
+        chegou o grande dia da nossa oficialização — o momento em que assumimos
+        o que já era tão real para nós.
+        <br /><br />
+        Vieram semanas difíceis logo depois. Adversidades, distâncias, saudades.
+        Mas resistimos. Ficamos firmes. Vivemos momentos incríveis: fomos a
+        eventos, à praia, curtimos intensamente cada segundo lado a lado.
+        <br /><br />
+        Até que, de forma inesperada e repentina, veio a notícia: não estaríamos
+        mais tão juntinhos, não conseguiríamos nos ver todo final de semana. Foi
+        doloroso. Ainda está sendo. Mas seguimos juntos. Superando, dia após
+        dia.
+        <br /><br />
+        E hoje, nesse dia tão especial — nosso primeiro Dia dos Namorados juntos
+        — estamos, novamente, lado a lado. Algo que parecia improvável… mas que
+        virou realidade.
+        <br /><br />
+        Vejo que, com o tempo, tudo vai se ajeitando. Nosso amor é forte. E
+        essa… essa é só a primeira parte da nossa história.
+        <br /><br />
+        <strong>Continua...</strong>
+      </p>
     </section>
 
     <!-- Galeria de fotos -->
     <section class="section-dark text-center">
-        <h2>Galeria de Fotos</h2>
-        <p>Momentos especiais que compartilhamos juntos.</p>
-        <div class="container">
-            <div class="row g-3">
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="polaroid" style="transform: rotate(-2deg);">
-                        <img src="Images/galery/img18.jpg" class="galery-img" alt="Foto 1">
-                        <div class="polaroid-caption">Momento especial</div>
-                    </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="polaroid" style="transform: rotate(2deg);">
-                        <img src="Images/galery/img04.jpg" class="galery-img" alt="Foto 2">
-                        <div class="polaroid-caption">Uma das primeiras viagens</div>
-                    </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="polaroid" style="transform: rotate(-1deg);">
-                        <img src="Images/galery/img05.jpg" class="galery-img" alt="Foto 3">
-                        <div class="polaroid-caption">Sorrisos e abraços</div>
-                    </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="polaroid" style="transform: rotate(1deg);">
-                        <img src="Images/galery/img15.jpg" class="galery-img" alt="Foto 4">
-                        <div class="polaroid-caption">Momento na praia</div>
-                    </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="polaroid" style="transform: rotate(-2deg);">
-                        <img src="Images/galery/img25.jpg" class="galery-img" alt="Foto 5">
-                        <div class="polaroid-caption">Pessoa maravilhosa</div>
-                    </div>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="polaroid" style="transform: rotate(2deg);">
-                        <img src="Images/galery/img12.jpg" class="galery-img" alt="Foto 6">
-                        <div class="polaroid-caption">Momento de lazer</div>
-                    </div>
-                </div>
+      <h2>Galeria de Fotos</h2>
+      <p>Momentos especiais que compartilhamos juntos.</p>
+      <div class="container">
+        <div class="row g-3">
+          <div class="col-12 col-sm-6 col-md-4">
+            <div class="polaroid" style="transform: rotate(-2deg)">
+              <img
+                src="Images/galery/img18.jpg"
+                class="galery-img"
+                alt="Foto 1"
+              />
+              <div class="polaroid-caption">Momento especial</div>
             </div>
+          </div>
+          <div class="col-12 col-sm-6 col-md-4">
+            <div class="polaroid" style="transform: rotate(2deg)">
+              <img
+                src="Images/galery/img04.jpg"
+                class="galery-img"
+                alt="Foto 2"
+              />
+              <div class="polaroid-caption">Uma das primeiras viagens</div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-md-4">
+            <div class="polaroid" style="transform: rotate(-1deg)">
+              <img
+                src="Images/galery/img05.jpg"
+                class="galery-img"
+                alt="Foto 3"
+              />
+              <div class="polaroid-caption">Sorrisos e abraços</div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-md-4">
+            <div class="polaroid" style="transform: rotate(1deg)">
+              <img
+                src="Images/galery/img15.jpg"
+                class="galery-img"
+                alt="Foto 4"
+              />
+              <div class="polaroid-caption">Momento na praia</div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-md-4">
+            <div class="polaroid" style="transform: rotate(-2deg)">
+              <img
+                src="Images/galery/img25.jpg"
+                class="galery-img"
+                alt="Foto 5"
+              />
+              <div class="polaroid-caption">Pessoa maravilhosa</div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-md-4">
+            <div class="polaroid" style="transform: rotate(2deg)">
+              <img
+                src="Images/galery/img12.jpg"
+                class="galery-img"
+                alt="Foto 6"
+              />
+              <div class="polaroid-caption">Momento de lazer</div>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- Nova seção alternando cor -->
     <section class="section-light text-center">
-        <h2>Mensagem Especial</h2>
-        <p style="max-width: 700px; margin: 0 auto; text-align: left; font-size: 1.15rem; line-height: 1.7;">
-            Na vida, muitas vezes buscamos bens materiais, fama, conquistas… tudo isso na tentativa de nos sentirmos bem, de impressionar, de receber reconhecimento. Mas, no fim das contas, nada disso realmente importa se não tivermos com quem compartilhar.
-            <br><br>
-            O que vale mesmo é ter alguém ao nosso lado — não só nos momentos de glória, mas principalmente nas dificuldades. Alguém que ilumina os dias nublados, que traz clareza quando tudo parece confuso, que nos impulsiona a continuar mesmo quando queremos parar.
-            <br><br>
-            Existe um brilho especial em certas pessoas… um olhar que desperta algo diferente, uma presença que acalma, um coração que acolhe. Alguém em quem confiamos plenamente, com quem podemos ser inteiros, vulneráveis, reais.
-            <br><br>
-            E o melhor da vida é exatamente isso: poder viver tudo isso ao lado de quem amamos. Compartilhar vitórias, viagens, sorrisos, lágrimas… viver os altos e baixos com a certeza de que aquela pessoa é indispensável.
-            <br><br>
-            E essa pessoa é você.
-            <br><br>
-            Você é quem me conforta, quem me ampara, quem está comigo nos dias bons e, principalmente, nos dias difíceis. Dividir a vida com você é uma das maiores bênçãos que já recebi.
-            <br><br>
-            Sou grato por cada instante ao seu lado.
-        </p>
+      <h2>Mensagem Especial</h2>
+      <p
+        style="
+          max-width: 700px;
+          margin: 0 auto;
+          text-align: left;
+          font-size: 1.15rem;
+          line-height: 1.7;
+        "
+      >
+        Na vida, muitas vezes buscamos bens materiais, fama, conquistas… tudo
+        isso na tentativa de nos sentirmos bem, de impressionar, de receber
+        reconhecimento. Mas, no fim das contas, nada disso realmente importa se
+        não tivermos com quem compartilhar.
+        <br /><br />
+        O que vale mesmo é ter alguém ao nosso lado — não só nos momentos de
+        glória, mas principalmente nas dificuldades. Alguém que ilumina os dias
+        nublados, que traz clareza quando tudo parece confuso, que nos
+        impulsiona a continuar mesmo quando queremos parar.
+        <br /><br />
+        Existe um brilho especial em certas pessoas… um olhar que desperta algo
+        diferente, uma presença que acalma, um coração que acolhe. Alguém em
+        quem confiamos plenamente, com quem podemos ser inteiros, vulneráveis,
+        reais.
+        <br /><br />
+        E o melhor da vida é exatamente isso: poder viver tudo isso ao lado de
+        quem amamos. Compartilhar vitórias, viagens, sorrisos, lágrimas… viver
+        os altos e baixos com a certeza de que aquela pessoa é indispensável.
+        <br /><br />
+        E essa pessoa é você.
+        <br /><br />
+        Você é quem me conforta, quem me ampara, quem está comigo nos dias bons
+        e, principalmente, nos dias difíceis. Dividir a vida com você é uma das
+        maiores bênçãos que já recebi.
+        <br /><br />
+        Sou grato por cada instante ao seu lado.
+      </p>
     </section>
 
     <!-- Seção Nosso Tempo Juntos -->
-    <section class="section-dark text-center" id="tempo-juntos" style="position: relative; overflow: hidden;">
-        <h2 style="margin-bottom: 0.5rem;">Nosso Tempo Juntos</h2>
-        <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
-            <div style="font-size: 1.1rem; color: #ffb3b3;">
-                <svg class="clock-animated" width="28" height="28" fill="#ff4d4d" viewBox="0 0 24 24" style="vertical-align: middle; margin-right: 8px;">
-                    <path d="M12 1a11 11 0 1 0 11 11A11.013 11.013 0 0 0 12 1zm0 20a9 9 0 1 1 9-9a9.01 9.01 0 0 1-9 9zm.5-9.87V7a1 1 0 0 0-2 0v5a1 1 0 0 0 .29.71l3.29 3.3a1 1 0 1 0 1.42-1.42z"/>
-                </svg>
-                Desde <strong>07/09/2024 às 20:00</strong>
-            </div>
-            <div style="background: rgba(255,255,255,0.07); border-radius: 18px; padding: 1.5rem 2.5rem; display: inline-block; box-shadow: 0 2px 16px 0 rgba(0,0,0,0.12);">
-                <div style="font-size: 2.2rem; font-weight: bold; color: #ff6666; letter-spacing: 1px;">
-                    <span id="contador-dias"></span>
-                </div>
-                <div style="font-size: 1.2rem; color: #ffb3b3; margin-top: 0.5rem;">
-                    <span id="contador-horas"></span>
-                </div>
-            </div>
-            <div style="margin-top: 1.2rem; color: #ffb3b3; font-size: 1.1rem; display: flex; align-items: center; justify-content: center;">
-                <svg class="heart-animated" style="margin-right: 10px;" width="22" height="22" fill="#ff4d4d" viewBox="0 0 24 24">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                </svg>
-                <span id="typewriter" class="typewriter"></span>
-            </div>
+    <section
+      class="section-dark text-center"
+      id="tempo-juntos"
+      style="position: relative; overflow: hidden"
+    >
+      <h2 style="margin-bottom: 0.5rem">Nosso Tempo Juntos</h2>
+      <div
+        style="
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 1rem;
+        "
+      >
+        <div style="font-size: 1.1rem; color: #ffb3b3">
+          <svg
+            class="clock-animated"
+            width="28"
+            height="28"
+            fill="#ff4d4d"
+            viewBox="0 0 24 24"
+            style="vertical-align: middle; margin-right: 8px"
+          >
+            <path
+              d="M12 1a11 11 0 1 0 11 11A11.013 11.013 0 0 0 12 1zm0 20a9 9 0 1 1 9-9a9.01 9.01 0 0 1-9 9zm.5-9.87V7a1 1 0 0 0-2 0v5a1 1 0 0 0 .29.71l3.29 3.3a1 1 0 1 0 1.42-1.42z"
+            />
+          </svg>
+          Desde <strong>07/09/2024 às 20:00</strong>
         </div>
+        <div
+          style="
+            background: rgba(255, 255, 255, 0.07);
+            border-radius: 18px;
+            padding: 1.5rem 2.5rem;
+            display: inline-block;
+            box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.12);
+          "
+        >
+          <div
+            style="
+              font-size: 2.2rem;
+              font-weight: bold;
+              color: #ff6666;
+              letter-spacing: 1px;
+            "
+          >
+            <span id="contador-dias"></span>
+          </div>
+          <div style="font-size: 1.2rem; color: #ffb3b3; margin-top: 0.5rem">
+            <span id="contador-horas"></span>
+          </div>
+        </div>
+        <div
+          style="
+            margin-top: 1.2rem;
+            color: #ffb3b3;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          "
+        >
+          <svg
+            class="heart-animated"
+            style="margin-right: 10px"
+            width="22"
+            height="22"
+            fill="#ff4d4d"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+            />
+          </svg>
+          <span id="typewriter" class="typewriter"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Nova seção: Um ano desde que nos conhecemos -->
+    <section class="section-light text-center">
+      <h2>Um Ano Desde Que Nos Conhecemos</h2>
+      <p
+        style="
+          max-width: 700px;
+          margin: 0 auto;
+          text-align: left;
+          font-size: 1.15rem;
+          line-height: 1.7;
+        "
+      >
+        Hoje faz um ano daquele dia em que nos conhecemos, um encontro
+        improvável, inesperado… e, ainda assim, o melhor da minha vida.<br /><br />
+        De lá pra cá vivemos tantas coisas juntos: um ano de aventuras, de
+        emoções intensas, de dias bons e também dias difíceis. Mas, em cada um
+        deles, tivemos o que realmente importa: nós dois, lado a lado, apoiando
+        e fortalecendo um ao outro.<br /><br />
+        Mesmo quando a vida tentou nos afastar, seguimos firmes, porque o que
+        sentimos é maior do que qualquer distância. Nosso amor é forte,
+        verdadeiro, cheio de fidelidade e entrega.<br /><br />
+        Dividir a vida com você, compartilhar cada riso, cada momento, é algo
+        que me faz sentir completo.<br /><br />
+        Eu te amo mais do que palavras podem dizer, e quero continuar escrevendo
+        essa história ao seu lado, todos os dias da minha vida. ❤️
+      </p>
     </section>
 
     <!-- Bootstrap JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const container = document.getElementById('heartContainer');
+      const container = document.getElementById("heartContainer");
 
-        function createHeart() {
-            const heart = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-            heart.setAttribute("class", "heart");
-            heart.setAttribute("viewBox", "0 0 24 24");
-            heart.setAttribute("fill", "#ff4d4d");
-            heart.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-            heart.innerHTML = `
+      function createHeart() {
+        const heart = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "svg"
+        );
+        heart.setAttribute("class", "heart");
+        heart.setAttribute("viewBox", "0 0 24 24");
+        heart.setAttribute("fill", "#ff4d4d");
+        heart.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+        heart.innerHTML = `
                 <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
             `;
-            heart.style.left = Math.random() * 100 + '%'; // Posição horizontal aleatória
-            heart.style.animationDuration = Math.random() * 3 + 2 + 's'; // Duração aleatória entre 2 e 5 segundos
-            container.appendChild(heart);
+        heart.style.left = Math.random() * 100 + "%"; // Posição horizontal aleatória
+        heart.style.animationDuration = Math.random() * 3 + 2 + "s"; // Duração aleatória entre 2 e 5 segundos
+        container.appendChild(heart);
 
-            setTimeout(() => {
-                heart.remove();
-            }, 5000); // Remove o coração após 5 segundos
+        setTimeout(() => {
+          heart.remove();
+        }, 5000); // Remove o coração após 5 segundos
+      }
+
+      setInterval(createHeart, 300); // Cria um coração a cada 300ms
+
+      function atualizarContador() {
+        const inicio = new Date("2024-09-07T20:00:00");
+        const agora = new Date();
+
+        let diff = agora - inicio;
+
+        if (diff < 0) {
+          document.getElementById("contador-dias").textContent =
+            "Ainda não nos conhecíamos!";
+          document.getElementById("contador-horas").textContent = "";
+          return;
         }
 
-        setInterval(createHeart, 300); // Cria um coração a cada 300ms
+        const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+        diff -= dias * (1000 * 60 * 60 * 24);
 
-        function atualizarContador() {
-            const inicio = new Date('2024-09-07T20:00:00');
-            const agora = new Date();
+        const horas = Math.floor(diff / (1000 * 60 * 60));
+        diff -= horas * (1000 * 60 * 60);
 
-            let diff = agora - inicio;
+        const minutos = Math.floor(diff / (1000 * 60));
+        diff -= minutos * (1000 * 60);
 
-            if (diff < 0) {
-                document.getElementById('contador-dias').textContent = "Ainda não nos conhecíamos!";
-                document.getElementById('contador-horas').textContent = "";
-                return;
+        const segundos = Math.floor(diff / 1000);
+
+        document.getElementById("contador-dias").textContent = `${dias} dias`;
+
+        document.getElementById(
+          "contador-horas"
+        ).textContent = `${horas} horas, ${minutos} minutos e ${segundos} segundos`;
+      }
+
+      setInterval(atualizarContador, 1000);
+      atualizarContador();
+
+      // Função para checar se a seção está visível
+      function isInViewport(element) {
+        const rect = element.getBoundingClientRect();
+        return rect.top < window.innerHeight && rect.bottom > 0;
+      }
+
+      let animacaoAtivada = false;
+      function ativarAnimacoesTempoJuntos() {
+        const section = document.getElementById("tempo-juntos");
+        if (!animacaoAtivada && isInViewport(section)) {
+          // Fade in
+          document.getElementById("contador-dias").style.opacity = 0;
+          document.getElementById("contador-horas").style.opacity = 0;
+          document
+            .getElementById("contador-dias")
+            .classList.add("animate__fadeIn");
+          document
+            .getElementById("contador-horas")
+            .classList.add("animate__fadeIn");
+          document
+            .getElementById("contador-dias")
+            .classList.add("animate-fadeIn");
+          document
+            .getElementById("contador-horas")
+            .classList.add("animate-fadeIn");
+          // Typewriter
+          document
+            .getElementById("typewriter")
+            .classList.add("animate-typewriter");
+          if (typeof window.typeWriterStarted === "undefined") {
+            window.typeWriterStarted = true;
+            typeWriter();
+          }
+          animacaoAtivada = true;
+        }
+      }
+
+      window.addEventListener("scroll", ativarAnimacoesTempoJuntos);
+      window.addEventListener("DOMContentLoaded", ativarAnimacoesTempoJuntos);
+
+      // Typewriter effect para a mensagem romântica
+      const mensagem = "Cada segundo ao seu lado é especial!";
+      let i = 0;
+      function typeWriter() {
+        if (i <= mensagem.length) {
+          document.getElementById("typewriter").textContent =
+            mensagem.substring(0, i);
+          i++;
+          setTimeout(typeWriter, 60);
+        }
+      }
+
+      // Função para mostrar animação/texto especial em 7 de setembro
+      function animacaoEspecialSeteSetembro() {
+        const hoje = new Date();
+        if (hoje.getDate() === 7 && hoje.getMonth() === 8) {
+          // Setembro é mês 8 (0-based)
+          // Cria um overlay de comemoração
+          const overlay = document.createElement("div");
+          overlay.style.position = "fixed";
+          overlay.style.top = 0;
+          overlay.style.left = 0;
+          overlay.style.width = "100vw";
+          overlay.style.height = "100vh";
+          overlay.style.background = "rgba(0,0,0,0.75)";
+          overlay.style.zIndex = 99999;
+          overlay.style.display = "flex";
+          overlay.style.flexDirection = "column";
+          overlay.style.justifyContent = "center";
+          overlay.style.alignItems = "center";
+
+          // Mensagem especial
+          const mensagem = document.createElement("div");
+          mensagem.innerHTML = `
+            <div style="font-size:2.2rem; color:#fff066; font-family:'Pacifico',cursive; text-align:center; margin-bottom: 20px;">
+              <span style="font-size:2.5rem; color:#ff4d4d;">❤</span><br>
+              Hoje comemoramos o dia em que nos conhecemos!<br>
+              <span style="font-size:1.3rem; color:#fff; font-family:'Caveat',cursive;">
+                Um encontro improvável, mas o início da nossa melhor história.<br>
+                Obrigado por existir na minha vida!<br>
+                <span style="color:#ffb3b3;">Te amo para sempre!</span>
+              </span>
+            </div>
+          `;
+
+          // Botão para fechar
+          const botao = document.createElement("button");
+          botao.textContent = "Fechar";
+          botao.style.padding = "10px 30px";
+          botao.style.fontSize = "1.1rem";
+          botao.style.borderRadius = "8px";
+          botao.style.border = "none";
+          botao.style.background = "#ff4d4d";
+          botao.style.color = "#fff";
+          botao.style.cursor = "pointer";
+          botao.style.marginTop = "10px";
+          botao.onclick = () => overlay.remove();
+
+          // Efeito confete simples
+          function confettiBurst() {
+            const colors = [
+              "#ff4d4d",
+              "#ffb3b3",
+              "#fff066",
+              "#66ffb3",
+              "#66b3ff",
+              "#ff66d9",
+            ];
+            const confettiCount = 80;
+            for (let i = 0; i < confettiCount; i++) {
+              const confetti = document.createElement("div");
+              const size = Math.random() * 8 + 8 + "px";
+              confetti.style.position = "fixed";
+              confetti.style.width = size;
+              confetti.style.height = size;
+              confetti.style.background =
+                colors[Math.floor(Math.random() * colors.length)];
+              confetti.style.left = Math.random() * 100 + "vw";
+              confetti.style.top = "-20px";
+              confetti.style.opacity = Math.random() * 0.5 + 0.5;
+              confetti.style.borderRadius = "50%";
+              confetti.style.zIndex = 100000;
+              confetti.style.transition =
+                "transform 2.2s, top 2.2s, opacity 2.2s";
+
+              setTimeout(() => {
+                confetti.style.top = "100vh";
+                confetti.style.transform = `rotate(${Math.random() * 720}deg)`;
+                confetti.style.opacity = 0;
+              }, 10);
+
+              document.body.appendChild(confetti);
+
+              setTimeout(() => {
+                confetti.remove();
+              }, 2300);
             }
+          }
 
-            const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
-            diff -= dias * (1000 * 60 * 60 * 24);
-
-            const horas = Math.floor(diff / (1000 * 60 * 60));
-            diff -= horas * (1000 * 60 * 60);
-
-            const minutos = Math.floor(diff / (1000 * 60));
-            diff -= minutos * (1000 * 60);
-
-            const segundos = Math.floor(diff / 1000);
-
-            document.getElementById('contador-dias').textContent =
-                `${dias} dias`;
-
-            document.getElementById('contador-horas').textContent =
-                `${horas} horas, ${minutos} minutos e ${segundos} segundos`;
+          overlay.appendChild(mensagem);
+          overlay.appendChild(botao);
+          document.body.appendChild(overlay);
+          confettiBurst();
         }
+      }
 
-        setInterval(atualizarContador, 1000);
-        atualizarContador();
-
-        // Função para checar se a seção está visível
-        function isInViewport(element) {
-            const rect = element.getBoundingClientRect();
-            return (
-                rect.top < window.innerHeight &&
-                rect.bottom > 0
-            );
-        }
-
-        let animacaoAtivada = false;
-        function ativarAnimacoesTempoJuntos() {
-            const section = document.getElementById('tempo-juntos');
-            if (!animacaoAtivada && isInViewport(section)) {
-                // Fade in
-                document.getElementById('contador-dias').style.opacity = 0;
-                document.getElementById('contador-horas').style.opacity = 0;
-                document.getElementById('contador-dias').classList.add('animate__fadeIn');
-                document.getElementById('contador-horas').classList.add('animate__fadeIn');
-                document.getElementById('contador-dias').classList.add('animate-fadeIn');
-                document.getElementById('contador-horas').classList.add('animate-fadeIn');
-                // Typewriter
-                document.getElementById('typewriter').classList.add('animate-typewriter');
-                if (typeof window.typeWriterStarted === "undefined") {
-                    window.typeWriterStarted = true;
-                    typeWriter();
-                }
-                animacaoAtivada = true;
-            }
-        }
-
-        window.addEventListener('scroll', ativarAnimacoesTempoJuntos);
-        window.addEventListener('DOMContentLoaded', ativarAnimacoesTempoJuntos);
-
-        // Typewriter effect para a mensagem romântica
-        const mensagem = "Cada segundo ao seu lado é especial!";
-        let i = 0;
-        function typeWriter() {
-            if (i <= mensagem.length) {
-                document.getElementById('typewriter').textContent = mensagem.substring(0, i);
-                i++;
-                setTimeout(typeWriter, 60);
-            }
-        }
+      window.addEventListener("DOMContentLoaded", animacaoEspecialSeteSetembro);
     </script>
-</body>
+  </body>
 </html>
